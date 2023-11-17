@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package example.v1alpha1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "protoc-gen-validate/validate/validate.proto";
+
+option go_package = "github.com/example/api/example/v1alpha1;examplev1alpha1";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Example API";
+    version: "1.0-alpha1";
+  };
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service ExampleService {
+  // Heartbeat
+  //
+  // Provides information about the service health
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/heartbeat"
+    };
+  };
+
+  // ExamplePost
+  //
+  // Sets up a POST endpoint
+  rpc ExamplePost(ExamplePostRequest) returns (ExamplePostResponse) {
+    option (google.api.http) = {
+      post: "/v1alpha1/example",
+      body: "example"
+    };
+  };
+
+  // ExampleGet
+  //
+  // Sets up a GET endpoint
+  rpc ExampleGet(ExampleGetRequest) returns (ExampleGetResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/example"
+    };
+  };
+
+  // ExampleDelete
+  //
+  // Sets up a DELETE endpoint
+  rpc ExampleDelete(ExampleDeleteRequest) returns (ExampleDeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/example/{id=*}"
+    };
+  };
+}
+
+message HeartbeatRequest {};
+
+message HeartbeatResponse {};
+
+message ExamplePostRequest {
+  // The example to add
+  Example example = 1;
+
+}
+
+message ExamplePostResponse {
+  // The added example
+  Example example = 1;
+}
+
+message ExampleGetRequest {}
+
+message ExampleGetResponse {
+  // The list of example
+  repeated Example example = 1;
+}
+
+message ExampleDeleteRequest {
+  // The unique identifier of the change.
+  int32 id = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "Example"
+  ];
+}
+
+message ExampleDeleteResponse {
+  // The deleted example
+  Example example = 1;
+}
+
+message Example {
+  // The unique identifier of the example.
+  int32 id = 1 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  enum Gender {
+    UNSPECIFIED = 0;
+    MALE = 1;
+    FEMALE = 2;
+  }
+
+  // The gender of the example
+  Gender gender = 2 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+
+  // The date of purchase of the example
+  string purchase_date = 3 [
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}

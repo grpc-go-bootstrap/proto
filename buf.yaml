@@ -1,0 +1,9 @@
+---
+build:
+  roots:
+    - proto
+    - third_party/proto
+
+lint:
+  ignore:
+    - google
